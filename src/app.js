@@ -1,7 +1,8 @@
 //Importamos express
 const express = require('express');
 const db = require('./utils/database');
-const Users = require('./models/users.models');
+const Todos = require('./models/todos.model');
+
 
 //Creamos la instancia
 
@@ -10,27 +11,38 @@ db.authenticate() //ES un método asincrono
     .then(() => console.log('Base de datos conectada...'))
     .catch(err => console.error(err));
 
+//Sincronizar mi bd
+db.sync()
+  .then(() => console.log('Base de datos sincronizada'))
+  .catch((error) => console.log(error));
+
 const app = express();
+
+//Sirve para extraer en json
+app.use(express.json());
 
 //Generamos una ruta app.get
 app.get('/', (req, res) => {
     res.send('Servidor funcionando...')
 });
 
-app.get('/users', async (req, res, next) => {
-    
+//
+app.post('/todos', async (req, res) => {
     try {
-        //Pedir la información a la db
-        const users = await Users.findAll();
+        //Extraemos el cuerpo de la petición
+        const newTodos = req.body;
 
-        //Responder con la información de la bd
-        res.json(users);
+        //Insertamos valores
+        await Todos.create(newTodos);
+
+        //Repondemos con un 201 = created
+        res.status(201).send();
 
     } catch (error) {
-        next(error);
+        res.status(400).json(error);
     }
+});
 
-})
 
 //Dejar escuchando a nuestro servidor en un puerto
 app.listen(8000, () => {

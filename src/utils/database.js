@@ -4,7 +4,7 @@
 //Crear una instancia de sequelize en la configuración de conexión
 const db = new Sequelize({
     host: "localhost",
-    database: "course_register",
+    database: "todos",
     port: 5432,
     username: "postgres",
     password: "root",
