@@ -2,7 +2,10 @@
 const express = require('express');
 const db = require('./utils/database');
 const Todos = require('./models/todos.model');
+const cors = require('cors');
+require('dotenv').config();
 
+const PORT = process.env.PORT || 8000;
 
 //Creamos la instancia
 
@@ -16,7 +19,11 @@ db.sync()
   .then(() => console.log('Base de datos sincronizada'))
   .catch((error) => console.log(error));
 
+
 const app = express();
+
+//cors -> para que no nos rechazen la petición
+app.use(cors());
 
 //Sirve para extraer en json
 app.use(express.json());
@@ -102,8 +109,7 @@ app.put('/todos/:id', async (req, res) => {
 
 
 //Dejar escuchando a nuestro servidor en un puerto
-app.listen(8000, () => {
-    console.log("Servidor escuchando en el puerto 8000")
+app.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`)
 });
 
-console.log(process.env);

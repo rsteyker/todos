@@ -5,9 +5,14 @@ var express = require('express');
 
 var db = require('./utils/database');
 
-var Todos = require('./models/todos.model'); //Creamos la instancia
-//Ejecutar el método authenticate
+var Todos = require('./models/todos.model');
 
+var cors = require('cors');
+
+require('dotenv').config();
+
+var PORT = process.env.PORT || 8000; //Creamos la instancia
+//Ejecutar el método authenticate
 
 db.authenticate() //ES un método asincrono
 .then(function () {
@@ -21,7 +26,9 @@ db.sync().then(function () {
 })["catch"](function (error) {
   return console.log(error);
 });
-var app = express(); //Sirve para extraer en json
+var app = express(); //cors -> para que no nos rechazen la petición
+
+app.use(cors()); //Sirve para extraer en json
 
 app.use(express.json()); //Generamos una ruta app.get
 
@@ -195,8 +202,7 @@ app.put('/todos/:id', function _callee5(req, res) {
   }, null, null, [[0, 8]]);
 }); //Dejar escuchando a nuestro servidor en un puerto
 
-app.listen(8000, function () {
-  console.log("Servidor escuchando en el puerto 8000");
+app.listen(PORT, function () {
+  console.log("Servidor escuchando en el puerto ".concat(PORT));
 });
-console.log(process.env);
 //# sourceMappingURL=app.dev.js.map
