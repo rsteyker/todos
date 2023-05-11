@@ -11,6 +11,7 @@ const Todos = db.define('todos', {
     title: {
         type: DataTypes.STRING(40),
         allowNull: false,
+        unique: true,
     },
     description: {
         type: DataTypes.STRING(100),
@@ -20,6 +21,8 @@ const Todos = db.define('todos', {
         type: DataTypes.BOOLEAN,
         allowNull: false,
     }
+},{
+    timestamps: false,
 });
 
 module.exports = Todos;
